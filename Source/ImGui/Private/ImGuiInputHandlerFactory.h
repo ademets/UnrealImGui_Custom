@@ -4,6 +4,8 @@
 
 #include "ImGuiModuleSettings.h"
 
+#include <UObject/SoftObjectPath.h>
+
 
 class FImGuiModuleManager;
 class UGameViewportClient;
@@ -13,7 +15,7 @@ class FImGuiInputHandlerFactory
 {
 public:
 
-	static UImGuiInputHandler* NewHandler(const FStringClassReference& HandlerClassReference, FImGuiModuleManager* ModuleManager, UGameViewportClient* GameViewport, int32 ContextIndex);
+	static UImGuiInputHandler* NewHandler(const FSoftClassPath& HandlerClassReference, FImGuiModuleManager* ModuleManager, UGameViewportClient* GameViewport, int32 ContextIndex);
 
 	static void ReleaseHandler(UImGuiInputHandler* Handler);
 };

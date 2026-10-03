@@ -6,6 +6,7 @@
 #include "ImGuiModuleSettings.h"
 
 #include <Rendering/RenderingCommon.h>
+#include <UObject/SoftObjectPath.h>
 #include <UObject/WeakObjectPtr.h>
 #include <Widgets/DeclarativeSyntaxSupport.h>
 #include <Widgets/SCompoundWidget.h>
@@ -84,7 +85,7 @@ public:
 
 private:
 
-	void CreateInputHandler(const FStringClassReference& HandlerClassReference);
+	void CreateInputHandler(const FSoftClassPath& HandlerClassReference);
 	void ReleaseInputHandler();
 
 	void RegisterImGuiSettingsDelegates();

@@ -17,7 +17,8 @@ public:
 
 	static FVector2D Float2ToFVector2D(int Value[2]);
 
-	static void FVector2DToFloat2(FVector2D Value,float* Result[2]);
+	// Writes X and Y into caller-owned storage containing at least two floats.
+	static void FVector2DToFloat2(FVector2D Value, float Result[2]);
 
 	static FVector Float3ToFVector(int Value[3]);
 
