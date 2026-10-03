@@ -26,6 +26,14 @@ Slate positions are copied explicitly into FVector2f values, and TArray
 shrink arguments use EAllowShrinking with the original Yes/No intent.
 No rendering/input result follows from these compiler compatibility edits.
 
+Build03 passed UHT (140 generated files in 30.49 seconds), then failed
+naturally with exit 6 in 100.8577497 seconds during C++ compilation.
+ImGui's float `DisplaySize` receives explicit value conversions from UE5's
+double vector components (`C2398`). The canvas drag algorithm constructs
+its `FVector2D` explicitly from Slate's transformed float delta (`C2440`).
+The `PLATFORM_XBOXONE` guard uses `defined()` to avoid the removed macro
+(`C4668`), retaining the clipboard/IME exclusions when the macro is true.
+
 One non-reflected public C++ helper intentionally changes signature:
 `Converter::FVector2DToFloat2(FVector2D, float* Result[2])` becomes
 `Converter::FVector2DToFloat2(FVector2D, float Result[2])`. The old form
@@ -37,7 +45,7 @@ callers must migrate from an array of pointers to two-float storage; this
 is a deliberate C++ signature/ABI change. It is not a reflected Blueprint
 API change. No pointer cast or local-address return is used.
 
-The post-metadata-fix consumer build and copied map proof are pending at this
+The post-C++-repair consumer build and copied map proof are pending at this
 checkpoint. The broader Blueprint helper lifetime/child-scope backlog in
 [dm-unreal #12](https://github.com/ademets/dm-unreal/issues/12) remains open;
 this narrow compile repair does not claim to resolve it.
