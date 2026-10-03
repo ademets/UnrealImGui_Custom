@@ -12,10 +12,10 @@ FVector2D Converter::Float2ToFVector2D(int Value[2])
 	return FVector2D(Value[0],Value[1]);
 }
 
-void Converter::FVector2DToFloat2(FVector2D Value,float* Result[2])
+void Converter::FVector2DToFloat2(FVector2D Value, float Result[2])
 {
-	Result[0] = &Value.X;
-	Result[1] = &Value.Y;
+	Result[0] = static_cast<float>(Value.X);
+	Result[1] = static_cast<float>(Value.Y);
 }
 
 FVector Converter::Float3ToFVector(int Value[3])

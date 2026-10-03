@@ -10,7 +10,7 @@ void FImGuiDrawList::CopyVertexData(TArray<FSlateVertex>& OutVertexBuffer, const
 #endif // ENGINE_COMPATIBILITY_LEGACY_CLIPPING_API
 {
 	// Reset and reserve space in destination buffer.
-	OutVertexBuffer.SetNumUninitialized(ImGuiVertexBuffer.Size, false);
+	OutVertexBuffer.SetNumUninitialized(ImGuiVertexBuffer.Size, EAllowShrinking::No);
 
 	// Transform and copy vertex data.
 	for (int Idx = 0; Idx < ImGuiVertexBuffer.Size; Idx++)
@@ -29,7 +29,8 @@ void FImGuiDrawList::CopyVertexData(TArray<FSlateVertex>& OutVertexBuffer, const
 		SlateVertex.Position[1] = VertexPosition.Y;
 		SlateVertex.ClipRect = VertexClippingRect;
 #else
-		SlateVertex.Position = Transform.TransformPoint(ImGuiInterops::ToVector2D(ImGuiVertex.pos));
+		const FVector2D VertexPosition = Transform.TransformPoint(ImGuiInterops::ToVector2D(ImGuiVertex.pos));
+		SlateVertex.Position = FVector2f(static_cast<float>(VertexPosition.X), static_cast<float>(VertexPosition.Y));
 #endif // ENGINE_COMPATIBILITY_LEGACY_CLIPPING_API
 
 		// Unpack ImU32 color.
@@ -40,7 +41,7 @@ void FImGuiDrawList::CopyVertexData(TArray<FSlateVertex>& OutVertexBuffer, const
 void FImGuiDrawList::CopyIndexData(TArray<SlateIndex>& OutIndexBuffer, const int32 StartIndex, const int32 NumElements) const
 {
 	// Reset buffer.
-	OutIndexBuffer.SetNumUninitialized(NumElements, false);
+	OutIndexBuffer.SetNumUninitialized(NumElements, EAllowShrinking::No);
 
 	// Copy elements (slow copy because of different sizes of ImDrawIdx and SlateIndex and because SlateIndex can
 	// have different size on different platforms).
