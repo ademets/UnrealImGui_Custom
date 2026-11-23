@@ -3,6 +3,8 @@
 
 #include "Converter.h"
 
+#include <cstdio>
+
 Converter::Converter()
 {
 }
@@ -85,9 +87,8 @@ FLinearColor Converter::ImVec4ToFLinearColor(ImVec4 Value)
 
 const char* Converter::FloatFormat(const int FractionalDigits)
 {
-	FString Format = "%.";
-	Format.AppendInt(FractionalDigits);
-	Format += "f";
-
-	return TCHAR_TO_ANSI(*Format);
+	// The pointer is valid until the next call on this thread.
+	static thread_local char Format[32];
+	std::snprintf(Format, sizeof Format, "%%.%df", FractionalDigits);
+	return Format;
 }
